@@ -11,16 +11,18 @@ OBJECT_FILES = \
 	$(BUILDDIR)/main.o \
 	$(BUILDDIR)/stdlib_system.o \
 	$(BUILDDIR)/tty.o \
-	# $(BUILDDIR)/io.o
+	$(BUILDDIR)/com.o \
+	$(BUILDDIR)/io.o \
 
 clean:
 	-rm *.bin
 	-rm *.iso
 	-rm -rf build
 	-rm -rf iso
+	-rm serial.log
 
 main.nim:
-	nim c -d:release kernel/$@
+	nim c kernel/$@
 
 boot.s:
 	$(ASMC) kernel/boot.s -o $(BUILDDIR)/boot.o
@@ -29,8 +31,10 @@ rename:
 	-perl-rename 's/\@m(.*)\.nim\.c\.o$$/$$1\.o/g' $(BUILDDIR)/*.nim.c.o
 	-perl-rename 's/(.*)\.nim\.c\.o$$/$$1\.o/g' $(BUILDDIR)/*.nim.c.o
 
+# -Wl,--unresolved-symbols=ignore-in-object-files
+# -L/bedrock/strata/arch/usr/lib/gcc/i686-elf/9.2.0/ -lgcc
 link:
-	$(CC) -T kernel/linker.ld -o jackos.bin -ffreestanding -O2 -nostdlib $(OBJECT_FILES)
+	$(CC) -Wl,--unresolved-symbols=ignore-in-object-files -T kernel/linker.ld -o jackos.bin -ffreestanding -O2 -nostdlib -lgcc $(OBJECT_FILES)
 
 iso:
 	mkdir -p iso/boot/grub
@@ -41,4 +45,4 @@ iso:
 build: main.nim boot.s rename link iso
 
 run:
-	qemu-system-x86_64 -cdrom jackos.iso
+	qemu-system-x86_64 -cdrom jackos.iso -serial file:serial.log

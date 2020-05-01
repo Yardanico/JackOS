@@ -1,3 +1,5 @@
+import com
+
 type
     CpuID* = tuple
         eax: uint32
@@ -103,10 +105,10 @@ proc get_model_name*(): string =
     return $cast[cstring](addr data)
 
 proc cpu_info*(): CpuInfo =
-    result = CpuInfo()
-    result.vendor_id = get_vendor_id()
-    result.family = get_family()
-    result.model = get_model()
-    result.model_name = get_model_name()
-    result.stepping = get_stepping()
+    debug: result = CpuInfo()
+    debug: result.vendor_id = get_vendor_id()
+    debug: result.family = get_family()
+    debug: result.model = get_model()
+    debug: result.model_name = get_model_name()
+    debug: result.stepping = get_stepping()
 

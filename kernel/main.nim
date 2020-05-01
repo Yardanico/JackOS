@@ -1,4 +1,5 @@
 import tty
+import com
 import cpuid as cpuid
 
 type
@@ -20,8 +21,22 @@ proc kmain(mb_header: PMultiboot_header, magic: int) {.exportc.} =
   # var outOfBounds = vram[x]
 
   let attr = makeColor(LightBlue, White)
-  let info = cpuid.cpu_info()
-  writeString(info.vendor_id, attr, (0, 0))
+  #let info = cpu_info()
+  #writeString(info.vendor_id, attr, (0, 0))
+  debug: 
+    var a = "hello "
+  debug:
+    var b = "world\n"
+  debug:
+    writeSerial(a & b)
+  debug: 
+    var c = @[1, 2, 3]
+  debug: 
+    c.add 5
+  debug:
+    writeSerial("c is - " & $c)
   writeString("Nim", attr, (25, 9))
-  writeString("Expressive. Efficient. Elegant.", attr, (25, 10))
-  rainbow("It's pure pleasure.", (x: 25, y: 11))
+
+  writeString("Expressive. Efficient. Elegant.", attr, (25, 11))
+  rainbow("It's pure pleasure.", (x: 25, y: 12))
+
