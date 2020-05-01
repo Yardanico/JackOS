@@ -25,9 +25,9 @@ Clone this project and cd into the cloned directory. If your system is configure
 
 
 ## Notes
-- system module uses `rawWrite` in some places, need to remove the call on `mmdisp.nim:65`
-- same should be done for `quit` on `mmdisp.nim:66`
-- linker is really not happy with nim symbols being unexported, temporary hack - `yournimlib/lib/nimbase.h:192` remove `__attribute__((visibility("hidden")))` so it looks like:
+- system module uses `rawWrite` in some places, need to remove the call in `nimfolder/lib/system/mmdisp.nim:65`
+- same should be done for `quit` in `nimfolder/lib/system/mmdisp.nim:66`
+- linker is really not happy with nim symbols being unexported, temporary hack - `nimfolder/lib/nimbase.h:192` remove `__attribute__((visibility("hidden")))` so it looks like:
 ```c
 #  define N_LIB_PRIVATE
 ```
