@@ -18,6 +18,7 @@ clean:
 	-rm *.bin
 	-rm *.iso
 	-rm -rf build
+	-rm serial.log
 	-rm -rf iso
 	-rm serial.log
 

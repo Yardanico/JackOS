@@ -38,8 +38,9 @@ proc writeSerial*(a: string) =
 
 template debug*(code: untyped) = 
   writeSerial("\n---\n")
-  writeSerial("before code")
+  writeSerial("before code\n")
   writeSerial(astToStr(code))
+  writeSerial('\n')
   code
   writeSerial("\nafter code\n")
   writeSerial("---\n")

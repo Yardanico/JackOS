@@ -22,3 +22,13 @@ You will need:
 These instructions are based off of my experience compiling on Arch linux, your milage may vary. First install the dependencies. `i686-elf-gcc` is very important. `rename-perl` is also required to rename the cached files before they get linked. This was primarily to make linking easier.
 
 Clone this project and cd into the cloned directory. If your system is configured correctly, you should be able to build the kernel using `make build`. `make run` will then launch the kernel with `QEMU`.
+
+
+## Notes
+- system module uses `rawWrite` in some places, need to remove the call on `mmdisp.nim:65`
+- same should be done for `quit` on `mmdisp.nim:66`
+- linker is really not happy with nim symbols being unexported, temporary hack - `yournimlib/lib/nimbase.h:192` remove `__attribute__((visibility("hidden")))` so it looks like:
+```c
+#  define N_LIB_PRIVATE
+```
+- system/excpt.nim:45 replace `showErrorMessage` with `discard`
