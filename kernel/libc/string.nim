@@ -29,16 +29,6 @@ proc memcmp*(aptr: ptr, bptr: ptr, size: csize_t): cint {.exportc.} =
             return 1
     return 0;
 
-proc memset*(bufptr: ptr, value: cint, size: csize_t): ptr {.exportc.} =
-    for i in 0..size:
-        bufptr[i] = value
-    return bufptr
-
-proc memcpy*(dstptr: ptr, srcptr: ptr, size: csize_t): ptr {.exportc.} =
-    for i in 0..size:
-        dstptr[i] = srcptr[i]
-    return dstptr;
-
 proc putchar(c: char): char {.exportc.} =
     # TODO: Implement STDIO and write the system call
     return c

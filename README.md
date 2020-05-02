@@ -32,3 +32,5 @@ Clone this project and cd into the cloned directory. If your system is configure
 #  define N_LIB_PRIVATE
 ```
 - system/excpt.nim:45 replace `showErrorMessage` with `discard`
+- system/excpt.nim:536 comment quit
+- system/excpt.nim:436 comment quit

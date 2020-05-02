@@ -3,18 +3,7 @@ import io
 
 const
   Com1 = 0x3f8
-#[
-{.push stackTrace:off.}
-proc outb(port: uint16, val: uint8) = 
-    asm """
-      outb `port`, `val`
-    """
 
-proc inb(port: uint16): uint8 = 
-  asm """
-    inb `port`, `result`
-  """
-]#
 proc initSerial* = 
   out8(Com1 + 1, 0x00) # Disable all interrupts
   out8(Com1 + 3, 0x80) # Enable DLAB (set baud rate divisor)

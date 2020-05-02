@@ -1,54 +1,48 @@
 import tty
 import com
+import libc/libc
 import cpuid
+import tables
+import utils
 
 type
   TMultiboot_header = object
   PMultiboot_header = ptr TMultiboot_header
 
 var
-  vram = cast[PVIDMem](0xB8000)
+  vram = cast[VIDMem](0xB8000)
 
 proc nomem = 
-  writeSerial("apparently we're out of memory now lol")
+  writeSerial("apparently we're out of memory now")
 
 outOfMemHook = nomem
 
 proc kmain(mb_header: PMultiboot_header, magic: int) {.exportc.} =
-  if magic != 0x2BADB002:
+  if magic != 0x1BADB002:
     discard # Something went wrong?
-
+  
+  initSerial()
   initTTY(vram)
-  screenClear(vram, LightBlue) # Make the screen yellow.
+  screenClear(vram, Black) # Make the screen yellow.
 
-  # Demonstration of error handling.
-  # var x = len(vram[])
-  # var outOfBounds = vram[x]
 
-  let attr = makeColor(LightBlue, White)
-  #let info = cpu_info()
-  #writeString(info.vendor_id, attr, (0, 0))
   debug: 
-    var a = "hello "
+    var a = @[1, 2, 3]
   debug:
-    var b = "world\n"
-  debug writeSerial(a & b)
+    a.add 5
   debug:
-    try:
-      debug writeSerial("raising")
-      raise newException(ValueError, "hi")
-    except:
-      debug writeSerial("caught\n")
-      debug writeSerial("error is - ")
-      debug writeSerial(getCurrentExceptionMsg())
-      debug writeSerial(getStackTrace())
-      debug writeSerial('\n')
+    writeSerial($a)
+  try:
+    let b = a[5]
+    writeSerial($b)
+  except:
+    writeSerial("caught\n")
+  print "Nim", NimVersion
+  print "Expressive. Efficient. Elegant."
+  print "It's pure pleasure.", clr = makeColor(Black, Yellow)
   debug:
-    var c = @[1, 2, 3]
-  debug c.add 5
-  debug writeSerial("c is - " & $c)
-  writeString("Nim", attr, (25, 9))
-
-  writeString("Expressive. Efficient. Elegant.", attr, (25, 11))
-  rainbow("It's pure pleasure.", (x: 25, y: 12))
-
+    var ab = newTable[string, string]()
+  debug:
+    ab["hello"] = "world"
+  debug:
+    print ab["hello"]
